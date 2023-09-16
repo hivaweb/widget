@@ -494,7 +494,7 @@ const db = getFirestore(app);
 
 console.log("FIREBASE LOADED!");
 let audio = null;
-const collectionRef = db.collection('text_request_data');
+const collectionRef = collection(db, 'text_request_data');
 
 function addTextRequestData(textRequest) {
   const documentRef = collectionRef.doc();
