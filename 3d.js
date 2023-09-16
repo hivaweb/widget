@@ -471,10 +471,23 @@ console.log(dictionary);
 
 let audio = null;
 
+const firebase = require('firebase');
+const db = firebase.firestore();
+const collectionRef = db.collection('text_request_data');
+
+function addTextRequestData(textRequest) {
+  const documentRef = collectionRef.doc();
+  documentRef.set({
+    textRequest,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
 recognition.onresult = function (event) {
     const last = event.results.length - 1;
     console.log(event.results[last][0].transcript);
     let text = event.results[last][0].transcript;
+    addTextRequestData(text);
     document.getElementById("caption").innerHTML = text;
     text = removeStopwords(text.toLowerCase());
     console.log(substituteWords(text, dictionary));
