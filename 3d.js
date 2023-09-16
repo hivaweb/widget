@@ -471,7 +471,7 @@ console.log(dictionary);
 
 let audio = null;
 
-const firebase = window.firebase;
+const firebase = app.firebase;
 const db = firebase.firestore();
 const collectionRef = db.collection('text_request_data');
 
