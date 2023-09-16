@@ -470,7 +470,6 @@ recognition.onaudiostart = function () {
 console.log(dictionary);
 
 let audio = null;
-
 const collectionRef = db.collection('text_request_data');
 
 function addTextRequestData(textRequest) {
