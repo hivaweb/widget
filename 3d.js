@@ -469,6 +469,7 @@ recognition.onaudiostart = function () {
 
 console.log(dictionary);
 
+console.log("FIREBASE LOADED!");
 let audio = null;
 const collectionRef = db.collection('text_request_data');
 
