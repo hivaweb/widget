@@ -468,6 +468,10 @@ recognition.onaudiostart = function () {
 };
 
 console.log(dictionary);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+console.log("FIREBASE READY!");
+const db = getFirestore(app);
 
 console.log("FIREBASE LOADED!");
 let audio = null;
