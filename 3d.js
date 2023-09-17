@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {RoughnessMipmapper} from 'three/examples/jsm/utils/RoughnessMipmapper';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 // Import the functions you need from the SDKs you need
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
@@ -21,9 +23,15 @@ appId: "1:639272553172:web:c9b2314bafc8e93ef3c941",
 measurementId: "G-FP5K38DTNL"
 };
 
-firebase.initializeApp(firebaseConfig);
-var database = firebase.database();
-var feedbackRef = database.ref('feedback');
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function getCities(db) {
+    const citiesCol = collection(db, 'cities');
+    const citySnapshot = await getDocs(citiesCol);
+    const cityList = citySnapshot.docs.map(doc => doc.data());
+    return cityList;
+}
 
 let mouseX = 0, mouseY = 0;
 let windowWidth = window.innerWidth;
@@ -497,10 +505,7 @@ recognition.onresult = function (event) {
     const last = event.results.length - 1;
     console.log(event.results[last][0].transcript);
     let text = event.results[last][0].transcript;
-    feedbackRef.push({
-        message: text,
-        timestamp: new Date().toString()
-    });
+
     document.getElementById("caption").innerHTML = text;
     text = removeStopwords(text.toLowerCase());
     console.log(substituteWords(text, dictionary));
