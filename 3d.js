@@ -95,10 +95,12 @@ function bit_rol(d, _) {
 
 function get_answer(request) {
     let best_answers = [];
+    let high_answer_fidelity_count = 0;
     for (let i = 0; i < qa.length; i++) {
         let answer_fidelity = intersection(request, qa[i].q);
         if (answer_fidelity > 1.05) {
             best_answers.push({q: qa[i].a, f: answer_fidelity});
+            if (answer_fidelity >= 1.9) high_answer_fidelity_count++;
             // return CryptoJS.MD5(qa[i].a);
             // break;
         }
@@ -106,7 +108,11 @@ function get_answer(request) {
     best_answers.sort((a, b) => b.f - a.f);
     console.log(best_answers);
     if (best_answers.length > 0) {
-        return CryptoJS.MD5(best_answers[0].q);
+        if (best_answers.length == high_answer_fidelity_count) {
+            return CryptoJS.MD5(best_answers[Math.round(Math.floor(high_answer_fidelity_count))].q);
+        } else {
+            return CryptoJS.MD5(best_answers[0].q);
+        }
     }
     else {
         return "repeat"
