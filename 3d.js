@@ -315,7 +315,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
 scene.add(ambientLight);
 
 const loader = new GLTFLoader();
-loader.load('./public/model.glb', function (gltf) {
+loader.load('./public/model_.glb', function (gltf) {
     const model = gltf.scene;
 
     gltf.scene.traverse(function (child) {
@@ -331,18 +331,18 @@ loader.load('./public/model.glb', function (gltf) {
     // actions["Speaking"].setEffectiveWeight(1);
     // prepareCrossFade(actions["Greeting"], actions["Speaking"]);
     setTimeout(() => {
-        prepareCrossFade(actions["Idle"], actions["greeting"])
+        prepareCrossFade(actions["Idle"], actions["Greeting"])
         setTimeout(() => {
-            prepareCrossFade(actions["greeting"], actions["Idle"])
+            prepareCrossFade(actions["Greeting"], actions["Idle"])
         }, 4000)
     }, 5000)
 
-    setInterval(() => {
-        actions["Blinking"].weight = 1;
-        setTimeout(() => {
-            actions["Blinking"].weight = 0;
-        }, 5000)
-    }, 5000)
+    // setInterval(() => {
+    //     actions["Blinking"].weight = 1;
+    //     setTimeout(() => {
+    //         actions["Blinking"].weight = 0;
+    //     }, 5000)
+    // }, 5000)
 
     // setInterval(() => {
     //     prepareCrossFade(actions["Speaking"], actions["Greeting"])
@@ -382,7 +382,7 @@ function initAnimations(gltf) {
         const action = mixer.clipAction(animation);
         actions[animation.name] = action;
         if (animation.name == "Idle") {
-            action.setEffectiveWeight(0.2);
+            action.setEffectiveWeight(0.5);
             action.setEffectiveTimeScale(1);
             action.play();
         } else {
