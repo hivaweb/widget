@@ -1,13 +1,13 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {RoughnessMipmapper} from 'three/examples/jsm/utils/RoughnessMipmapper';
-import { initializeApp } from 'firebase';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 
 // Import the functions you need from the SDKs you need
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 // import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
-// import { getFirestore } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+import { getFirestore, collection } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,18 +20,12 @@ projectId: "hivaweb-4624b",
 storageBucket: "hivaweb-4624b.appspot.com",
 messagingSenderId: "639272553172",
 appId: "1:639272553172:web:c9b2314bafc8e93ef3c941",
-measurementId: "G-FP5K38DTNL"
+measurementId: "G-FP5K38DTNL",
+    databaseURL: "https://hivaweb-4624b-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-async function getCities(db) {
-    const citiesCol = collection(db, 'cities');
-    const citySnapshot = await getDocs(citiesCol);
-    const cityList = citySnapshot.docs.map(doc => doc.data());
-    return cityList;
-}
+const database = getDatabase(app);
 
 let mouseX = 0, mouseY = 0;
 let windowWidth = window.innerWidth;
@@ -498,6 +492,45 @@ recognition.onaudiostart = function () {
     animationOutline[0].style.animationIterationCount = 'infinite';
 };
 
+// Generate a random session ID
+function generateSessionId() {
+    // Create a random 32-character hexadecimal string
+    const randomString = [...Array(32)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+    return randomString;
+}
+
+// Generate a session hash using a secure hashing algorithm (e.g., SHA-256)
+function generateSessionHash(sessionId) {
+    // Create a new SHA-256 hash object
+    const crypto = window.crypto || window.msCrypto; // Check for browser support
+    if (!crypto) {
+        console.error('Crypto API is not supported in this browser.');
+        return null;
+    }
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(sessionId);
+
+    return crypto.subtle.digest('SHA-256', data)
+        .then(hashBuffer => {
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        });
+}
+
+// Generate and use the session ID and hash
+const sessionId = generateSessionId();
+generateSessionHash(sessionId)
+    .then(sessionHash => {
+        console.log('Session ID:', sessionId);
+        console.log('Session Hash (SHA-256):', sessionHash);
+    })
+    .catch(error => {
+        console.error('Error generating session hash:', error);
+    });
+
+
 console.log(dictionary);
 let audio = null;
 
@@ -505,7 +538,12 @@ recognition.onresult = function (event) {
     const last = event.results.length - 1;
     console.log(event.results[last][0].transcript);
     let text = event.results[last][0].transcript;
-
+    console.log(generateSessionId());
+    set(ref(database, 'feedback/' + generateSessionId() ), {
+        text: text,
+        timestamp: new Date().toString(),
+        session: "user1"
+    });
     document.getElementById("caption").innerHTML = text;
     text = removeStopwords(text.toLowerCase());
     console.log(substituteWords(text, dictionary));
