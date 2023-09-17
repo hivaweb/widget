@@ -449,20 +449,16 @@ window.sayHello = function() {
     startAudio = new Audio("./public/voice/hello_" + Math.round(Math.random()) + ".wav");
     startAudio.play().then();
     speaking = true;
-    actions["Mouth loop"].setEffectiveWeight(1);
+    actions["Mouth"].setEffectiveWeight(1);
     startAudio.onended = function () {
-        actions["Mouth loop"].setEffectiveWeight(0);
+        actions["Mouth"].setEffectiveWeight(0);
         speaking = false;
         recognition.start();
     };
 }
 
-window.switchLanguage = function() {
-    if (recognition.lang == "en-EN") {
-        recognition.lang = "ru-RU";
-    } else {
-        recognition.lang = "en-EN";
-    }
+window.switchLanguage = function(lang) {
+    recognition.lang = lang;
 }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -560,9 +556,9 @@ recognition.onresult = function (event) {
         audio.play().then();
         audio.playbackRate = 1.0;
         speaking = true;
-        actions["Mouth loop"].setEffectiveWeight(1);
+        actions["Mouth"].setEffectiveWeight(1);
         audio.onended = function () {
-            actions["Mouth loop"].setEffectiveWeight(0);
+            actions["Mouth"].setEffectiveWeight(0);
             speaking = false;
             recognition.start();
         };
@@ -578,8 +574,8 @@ recognition.onresult = function (event) {
 window.stopRecognize = function() {
     recognition.stop();
     animationOutline[0].style.animationIterationCount = '0';
-    if (audio !== null) {audio.pause(); audio.currentTime = 0; speaking = false; actions["Mouth loop"].setEffectiveWeight(0);}
-    if (startAudio !== null) {startAudio.pause(); startAudio.currentTime = 0; actions["Mouth loop"].setEffectiveWeight(0); speaking = false;}
+    if (audio !== null) {audio.pause(); audio.currentTime = 0; speaking = false; actions["Mouth"].setEffectiveWeight(0);}
+    if (startAudio !== null) {startAudio.pause(); startAudio.currentTime = 0; actions["Mouth"].setEffectiveWeight(0); speaking = false;}
 }
 
 window.clearAfterClose = function() {
