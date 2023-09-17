@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {RoughnessMipmapper} from 'three/examples/jsm/utils/RoughnessMipmapper';
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase';
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 // Import the functions you need from the SDKs you need
