@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ac7f86b-7e18-43d5-ad3d-406ab704c364" name="Changes" comment="firebase fix 3">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/qa.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/qa.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +37,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1694927363632</updated>
-      <workItem from="1694927364747" duration="16953000" />
+      <workItem from="1694927364747" duration="17673000" />
     </task>
     <task id="LOCAL-00001" summary="firebase fix">
       <created>1694927838022</created>
