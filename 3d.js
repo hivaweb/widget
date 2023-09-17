@@ -8,11 +8,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebas
 // import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
 import { getFirestore, collection } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
 apiKey: "AIzaSyBtpi-RetdHZN1Zec9N40Hs4LxWuUnZ0hs",
 authDomain: "hivaweb-4624b.firebaseapp.com",
