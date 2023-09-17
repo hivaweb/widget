@@ -3,9 +3,9 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {RoughnessMipmapper} from 'three/examples/jsm/utils/RoughnessMipmapper';
 
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+// import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
+// import { getFirestore } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,6 +20,10 @@ messagingSenderId: "639272553172",
 appId: "1:639272553172:web:c9b2314bafc8e93ef3c941",
 measurementId: "G-FP5K38DTNL"
 };
+
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+var feedbackRef = database.ref('feedback');
 
 let mouseX = 0, mouseY = 0;
 let windowWidth = window.innerWidth;
@@ -487,28 +491,16 @@ recognition.onaudiostart = function () {
 };
 
 console.log(dictionary);
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-console.log("FIREBASE READY!");
-const db = getFirestore(app);
-
-console.log("FIREBASE LOADED!");
 let audio = null;
-const collectionRef = collection(db, 'text_request_data');
-
-function addTextRequestData(textRequest) {
-  const documentRef = collectionRef.doc();
-  documentRef.set({
-    textRequest,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-  });
-}
 
 recognition.onresult = function (event) {
     const last = event.results.length - 1;
     console.log(event.results[last][0].transcript);
     let text = event.results[last][0].transcript;
-    addTextRequestData(text);
+    feedbackRef.push({
+        message: text,
+        timestamp: new Date().toString()
+    });
     document.getElementById("caption").innerHTML = text;
     text = removeStopwords(text.toLowerCase());
     console.log(substituteWords(text, dictionary));
