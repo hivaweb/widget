@@ -97,7 +97,7 @@ function get_answer(request) {
     let best_answers = [];
     for (let i = 0; i < qa.length; i++) {
         let answer_fidelity = intersection(request, qa[i].q);
-        if (answer_fidelity > 1.25) {
+        if (answer_fidelity > 1.05) {
             best_answers.push({q: qa[i].a, f: answer_fidelity});
             // return CryptoJS.MD5(qa[i].a);
             // break;
@@ -334,11 +334,11 @@ loader.load('./public/model_.glb', function (gltf) {
     }, 5000)
 
     // setInterval(() => {
-    //     actions["Blinking"].weight = 0.5;
+    //     actions["Blinking"].weight = 1;
     //     setTimeout(() => {
     //         actions["Blinking"].weight = 0;
-    //     }, 2000)
-    // }, 3000)
+    //     }, 10000)
+    // }, 10000)
 
     // setInterval(() => {
     //     prepareCrossFade(actions["Speaking"], actions["Greeting"])
@@ -455,6 +455,14 @@ window.sayHello = function() {
         speaking = false;
         recognition.start();
     };
+}
+
+window.switchLanguage = function() {
+    if (recognition.lang == "en-EN") {
+        recognition.lang = "ru-RU";
+    } else {
+        recognition.lang = "en-EN";
+    }
 }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
