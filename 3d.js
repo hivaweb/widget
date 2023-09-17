@@ -537,20 +537,21 @@ let audio = null;
 recognition.onresult = function (event) {
     const last = event.results.length - 1;
     console.log(event.results[last][0].transcript);
-    let text = event.results[last][0].transcript;
+    let original_text = event.results[last][0].transcript;
     console.log(generateSessionId());
-    set(ref(database, 'feedback/' + generateSessionId() ), {
-        text: text,
-        timestamp: new Date().toString(),
-        session: "user1"
-    });
-    document.getElementById("caption").innerHTML = text;
-    text = removeStopwords(text.toLowerCase());
+    document.getElementById("caption").innerHTML = original_text;
+    let text = removeStopwords(original_text.toLowerCase());
     console.log(substituteWords(text, dictionary));
     let audio_answer_id = get_answer(text);
     if (audio_answer_id === undefined) audio_answer_id = get_answer(substituteWords(text, dictionary));
     console.log(audio_answer_id);
     if (audio_answer_id !== undefined) {
+        set(ref(database, 'feedback/' + generateSessionId() ), {
+            text: original_text,
+            timestamp: new Date().toString(),
+            session: "user1",
+            new_question: (audio_answer_id == "repeat" ? true : false)
+        });
         audio = new Audio("./public/voice/" + audio_answer_id + ".wav");
         audio.play().then();
         audio.playbackRate = 1.0;
