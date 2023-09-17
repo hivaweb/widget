@@ -338,11 +338,11 @@ loader.load('./public/model_.glb', function (gltf) {
     }, 5000)
 
     // setInterval(() => {
-    //     actions["Blinking"].weight = 1;
+    //     actions["Blinking"].weight = 0.5;
     //     setTimeout(() => {
     //         actions["Blinking"].weight = 0;
-    //     }, 5000)
-    // }, 5000)
+    //     }, 2000)
+    // }, 3000)
 
     // setInterval(() => {
     //     prepareCrossFade(actions["Speaking"], actions["Greeting"])
@@ -476,7 +476,7 @@ const grammar = "#JSGF V1.0; grammar cash2u; public <cash2u> = кэш тую | �
 speechRecognitionList.addFromString(grammar, 1);
 recognition.grammars = speechRecognitionList;
 //recognition.continuous = false;
-recognition.lang = 'en-EN';
+recognition.lang = 'ru-RU';
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
