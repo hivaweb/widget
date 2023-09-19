@@ -460,7 +460,7 @@ let startAudio = null;
 window.sayHello = function() {
     let r = Math.round(Math.random());
     if (recognition.lang == "ru-RU") { r = 0}
-    startAudio = new Audio("./public/voice/hello_" +  + ".wav");
+    startAudio = new Audio("./public/voice/hello_" + r + ".wav");
     startAudio.play().then();
     speaking = true;
     actions["Mouth"].setEffectiveWeight(1);
