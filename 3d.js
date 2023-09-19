@@ -100,17 +100,23 @@ function get_answer(request) {
         let answer_fidelity = intersection(request, qa[i].q);
         if (answer_fidelity > 1.05) {
             best_answers.push({q: qa[i].a, f: answer_fidelity});
-            if (answer_fidelity >= 1.9) high_answer_fidelity_count++;
+            if (answer_fidelity > 1.05) high_answer_fidelity_count++;
             // return CryptoJS.MD5(qa[i].a);
             // break;
         }
     }
     best_answers.sort((a, b) => b.f - a.f);
     console.log(best_answers);
+
     if (best_answers.length > 0) {
-        if (best_answers.length == high_answer_fidelity_count) {
-            return CryptoJS.MD5(best_answers[Math.round(Math.floor(high_answer_fidelity_count))].q);
+        console.log(best_answers.length);
+        console.log(high_answer_fidelity_count);
+        if (best_answers.length === high_answer_fidelity_count) {
+            let r = Math.floor(Math.random(high_answer_fidelity_count) * high_answer_fidelity_count);
+            console.log(r);
+            return CryptoJS.MD5(best_answers[r].q);
         } else {
+            console.log(0);
             return CryptoJS.MD5(best_answers[0].q);
         }
     }
@@ -452,7 +458,9 @@ function onWindowResize() {
 let startAudio = null;
 
 window.sayHello = function() {
-    startAudio = new Audio("./public/voice/hello_" + Math.round(Math.random()) + ".wav");
+    let r = Math.round(Math.random());
+    if (recognition.lang == "ru-RU") { r = 0}
+    startAudio = new Audio("./public/voice/hello_" +  + ".wav");
     startAudio.play().then();
     speaking = true;
     actions["Mouth"].setEffectiveWeight(1);
