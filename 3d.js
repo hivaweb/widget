@@ -616,3 +616,17 @@ recognition.onend = () => {
     recognition.stop();
     animationOutline[0].style.animationIterationCount = '0';
 };
+
+let captionHtml = document.getElementById('caption');
+// Добавляем обработчик события на изменение размера окна
+captionHtml.addEventListener('resize', handleResize);
+
+function handleResize() {
+    const textContent = captionHtml.textContent;
+    if (textContent.length < 18)
+        captionHtml.style.fontSize = '1.5em'
+    else if (textContent.length < 36)
+        captionHtml.style.fontSize = '1.1em'
+    else
+        captionHtml.style.fontSize = '0.8em'
+}
