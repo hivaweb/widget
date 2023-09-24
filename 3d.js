@@ -617,9 +617,11 @@ recognition.onend = () => {
     animationOutline[0].style.animationIterationCount = '0';
 };
 
+const resizeObserver = new ResizeObserver(handleResize);
+
 let captionHtml = document.getElementById('caption');
 // Добавляем обработчик события на изменение размера окна
-captionHtml.addEventListener('resize', handleResize);
+resizeObserver.observe(captionHtml);
 
 function handleResize() {
     const textContent = captionHtml.textContent;

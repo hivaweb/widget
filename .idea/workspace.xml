@@ -7,7 +7,6 @@
     <list default="true" id="1ac7f86b-7e18-43d5-ad3d-406ab704c364" name="Changes" comment="firebase fix 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/3d.js" beforeDir="false" afterPath="$PROJECT_DIR$/3d.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +55,7 @@
       <updated>1694927363632</updated>
       <workItem from="1694927364747" duration="24330000" />
       <workItem from="1695121208769" duration="660000" />
-      <workItem from="1695566556341" duration="1393000" />
+      <workItem from="1695566556341" duration="1644000" />
     </task>
     <task id="LOCAL-00001" summary="firebase fix">
       <created>1694927838022</created>
