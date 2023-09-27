@@ -343,13 +343,17 @@ loader.load('./public/model_.glb', function (gltf) {
     // actions["Speaking"].setEffectiveWeight(1);
     // prepareCrossFade(actions["Greeting"], actions["Speaking"]);
     setTimeout(() => {
-        prepareCrossFade(actions["Idle"], actions["Greeting"])
-        greetingHiva= true;
-        setTimeout(() => {
-            greetingHiva = false;
-            prepareCrossFade(actions["Greeting"], actions["Idle"]);
-            setTimeout(window.animationPressMe, 4000);
-        }, 4000)
+        window.animationPressMe(() => {
+            prepareCrossFade(actions["Idle"], actions["Greeting"])
+            greetingHiva= true;
+            setTimeout(() => {
+                greetingHiva = false;
+                prepareCrossFade(actions["Greeting"], actions["Idle"]);
+            }, 4000);
+        })
+    }, 1000)
+    setTimeout(() => {
+
     }, 5000)
 
     // setInterval(() => {
@@ -505,6 +509,18 @@ recognition.lang = 'ru-RU';
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
+// Устанавливаем обработчик события "start"
+recognition.onstart = () => {
+    console.log('Запись началась');
+
+    // Ждем 5 секунд, затем автоматически останавливаем запись
+    setTimeout(() => {
+        recognition.stop();
+        animationOutline[0].style.animationIterationCount = '0';
+        console.log('Запись завершена');
+    }, 6000);
+};
+
 microphoneIcon.onclick = function () {
     if (!speaking) {
         recognition.start();
@@ -556,20 +572,15 @@ generateSessionHash(sessionId)
     });
 
 
-console.log(dictionary);
 let audio = null;
 
 recognition.onresult = function (event) {
     const last = event.results.length - 1;
-    console.log(event.results[last][0].transcript);
     let original_text = event.results[last][0].transcript;
-    console.log(generateSessionId());
     document.getElementById("caption").innerHTML = original_text;
     let text = removeStopwords(original_text.toLowerCase());
-    console.log(substituteWords(text, dictionary));
     let audio_answer_id = get_answer(text);
     if (audio_answer_id === undefined) audio_answer_id = get_answer(substituteWords(text, dictionary));
-    console.log(audio_answer_id);
     if (audio_answer_id !== undefined) {
         set(ref(database, 'feedback/' + generateSessionId() ), {
             text: original_text,
@@ -636,15 +647,19 @@ resizeObserver.observe(captionHtml);
 
 function handleResize() {
     const textContent = captionHtml.textContent;
-    if (textContent.length < 18)
-        captionHtml.style.fontSize = '1.5em'
-    else if (textContent.length < 36)
+    if (textContent.length < 18) {
+        captionHtml.style.fontSize = '1.5em';
+        captionHtml.style.padding = '6px';
+    } else if (textContent.length < 36) {
         captionHtml.style.fontSize = '1.1em'
-    else
-        captionHtml.style.fontSize = '0.8em'
+        captionHtml.style.padding = '9px';
+    } else {
+        captionHtml.style.fontSize = '0.8em';
+        captionHtml.style.padding = '12px';
+    }
 }
 
-window.animationPressMe = function() {
+window.animationPressMe = function(userFunction) {
     if (!isModal) {
         pressMe = true;
         actions["Greeting"].setEffectiveWeight(0);
@@ -654,6 +669,9 @@ window.animationPressMe = function() {
             actions["Greeting"].setEffectiveWeight(0);
             prepareCrossFade(actions["Press me anim"], actions["Idle"]);
             pressMe = false;
+            if (typeof userFunction === 'function') {
+                userFunction(); // Вызываем приходящую функцию, если она была передана
+            }
         }, 8000);
     }
 }
