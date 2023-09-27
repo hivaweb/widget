@@ -19,9 +19,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2VVhsj2sKIaQmXOfqh3WvebPALD" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -37,6 +37,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -55,7 +56,8 @@
       <updated>1694927363632</updated>
       <workItem from="1694927364747" duration="24330000" />
       <workItem from="1695121208769" duration="660000" />
-      <workItem from="1695566556341" duration="1644000" />
+      <workItem from="1695566556341" duration="1965000" />
+      <workItem from="1695809317806" duration="4678000" />
     </task>
     <task id="LOCAL-00001" summary="firebase fix">
       <created>1694927838022</created>

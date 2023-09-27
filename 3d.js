@@ -26,6 +26,8 @@ const database = getDatabase(app);
 let mouseX = 0, mouseY = 0;
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerHeight;
+let pressMe = false;
+let greetingHiva = false;
 
 const scene = new THREE.Scene();
 scene.background = null;
@@ -340,7 +342,9 @@ loader.load('./public/model_.glb', function (gltf) {
     // prepareCrossFade(actions["Greeting"], actions["Speaking"]);
     setTimeout(() => {
         prepareCrossFade(actions["Idle"], actions["Greeting"])
+        greetingHiva= true;
         setTimeout(() => {
+            greetingHiva = false;
             prepareCrossFade(actions["Greeting"], actions["Idle"])
         }, 4000)
     }, 5000)
@@ -406,6 +410,9 @@ function prepareCrossFade(startAction, endAction) {
 
     if (startAction === actions["Idle"]) {
         executeCrossFade(startAction, endAction, duration);
+    } else if (startAction === actions["Press me anim"]) {
+        // Логика для перехода между "Press me anim" и другой анимацией
+        executeCrossFade(startAction, endAction, duration);
     } else {
         synchronizeCrossFade(startAction, endAction, duration);
     }
@@ -463,6 +470,7 @@ window.sayHello = function() {
     startAudio = new Audio("./public/voice/hello_" + r + ".wav");
     startAudio.play().then();
     speaking = true;
+    actions["Press me anim"].setEffectiveWeight(0);
     actions["Mouth"].setEffectiveWeight(1);
     startAudio.onended = function () {
         actions["Mouth"].setEffectiveWeight(0);
@@ -631,4 +639,18 @@ function handleResize() {
         captionHtml.style.fontSize = '1.1em'
     else
         captionHtml.style.fontSize = '0.8em'
+}
+
+window.animationPressMe = async function() {
+    pressMe = true;
+    actions["Greeting"].setEffectiveWeight(0);
+    prepareCrossFade(actions["Idle"], actions["Press me anim"]);
+    console.log(actions["Idle"].getEffectiveWeight(), actions["Greeting"].getEffectiveWeight());
+
+    return setTimeout(() => {
+        console.log(actions["Idle"].getEffectiveWeight(), actions["Greeting"].getEffectiveWeight());
+        actions["Greeting"].setEffectiveWeight(0);
+        prepareCrossFade(actions["Press me anim"], actions["Idle"]);
+        pressMe = false;
+    }, 8000);
 }
