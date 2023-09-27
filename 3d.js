@@ -36,6 +36,8 @@ renderer.setSize(windowWidth, windowHeight);
 renderer.domElement.style.backgroundColor = 'transparent';
 document.body.appendChild(renderer.domElement);
 
+let isModal = false;
+
 let MD5 = function (d) {
     var r = M(V(Y(X(d), 8 * d.length)));
     return r.toLowerCase()
@@ -345,7 +347,8 @@ loader.load('./public/model_.glb', function (gltf) {
         greetingHiva= true;
         setTimeout(() => {
             greetingHiva = false;
-            prepareCrossFade(actions["Greeting"], actions["Idle"])
+            prepareCrossFade(actions["Greeting"], actions["Idle"]);
+            setTimeout(window.animationPressMe, 4000);
         }, 4000)
     }, 5000)
 
@@ -641,16 +644,24 @@ function handleResize() {
         captionHtml.style.fontSize = '0.8em'
 }
 
-window.animationPressMe = async function() {
-    pressMe = true;
-    actions["Greeting"].setEffectiveWeight(0);
-    prepareCrossFade(actions["Idle"], actions["Press me anim"]);
-    console.log(actions["Idle"].getEffectiveWeight(), actions["Greeting"].getEffectiveWeight());
-
-    return setTimeout(() => {
-        console.log(actions["Idle"].getEffectiveWeight(), actions["Greeting"].getEffectiveWeight());
+window.animationPressMe = function() {
+    if (!isModal) {
+        pressMe = true;
         actions["Greeting"].setEffectiveWeight(0);
-        prepareCrossFade(actions["Press me anim"], actions["Idle"]);
-        pressMe = false;
-    }, 8000);
+        prepareCrossFade(actions["Idle"], actions["Press me anim"]);
+
+        return setTimeout(() => {
+            actions["Greeting"].setEffectiveWeight(0);
+            prepareCrossFade(actions["Press me anim"], actions["Idle"]);
+            pressMe = false;
+        }, 8000);
+    }
+}
+
+window.showModal = function () {
+    isModal = true;
+}
+
+window.hideModal = function () {
+    isModal = false;
 }
