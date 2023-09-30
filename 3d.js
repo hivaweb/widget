@@ -26,6 +26,8 @@ const database = getDatabase(app);
 let mouseX = 0, mouseY = 0;
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerHeight;
+let pressMe = false;
+let greetingHiva = false;
 
 const scene = new THREE.Scene();
 scene.background = null;
@@ -33,6 +35,8 @@ const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(windowWidth, windowHeight);
 renderer.domElement.style.backgroundColor = 'transparent';
 document.body.appendChild(renderer.domElement);
+
+let isModal = false;
 
 let MD5 = function (d) {
     var r = M(V(Y(X(d), 8 * d.length)));
@@ -339,10 +343,17 @@ loader.load('./public/model_.glb', function (gltf) {
     // actions["Speaking"].setEffectiveWeight(1);
     // prepareCrossFade(actions["Greeting"], actions["Speaking"]);
     setTimeout(() => {
-        prepareCrossFade(actions["Idle"], actions["Greeting"])
-        setTimeout(() => {
-            prepareCrossFade(actions["Greeting"], actions["Idle"])
-        }, 4000)
+        window.animationPressMe(() => {
+            prepareCrossFade(actions["Idle"], actions["Greeting"])
+            greetingHiva= true;
+            setTimeout(() => {
+                greetingHiva = false;
+                prepareCrossFade(actions["Greeting"], actions["Idle"]);
+            }, 4000);
+        })
+    }, 1000)
+    setTimeout(() => {
+
     }, 5000)
 
     // setInterval(() => {
@@ -406,6 +417,9 @@ function prepareCrossFade(startAction, endAction) {
 
     if (startAction === actions["Idle"]) {
         executeCrossFade(startAction, endAction, duration);
+    } else if (startAction === actions["Press me anim"]) {
+        // Логика для перехода между "Press me anim" и другой анимацией
+        executeCrossFade(startAction, endAction, duration);
     } else {
         synchronizeCrossFade(startAction, endAction, duration);
     }
@@ -463,6 +477,7 @@ window.sayHello = function() {
     startAudio = new Audio("./public/voice/hello_" + r + ".wav");
     startAudio.play().then();
     speaking = true;
+    actions["Press me anim"].setEffectiveWeight(0);
     actions["Mouth"].setEffectiveWeight(1);
     startAudio.onended = function () {
         actions["Mouth"].setEffectiveWeight(0);
@@ -493,6 +508,18 @@ recognition.grammars = speechRecognitionList;
 recognition.lang = 'ru-RU';
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
+
+// Устанавливаем обработчик события "start"
+recognition.onstart = () => {
+    console.log('Запись началась');
+
+    // Ждем 5 секунд, затем автоматически останавливаем запись
+    setTimeout(() => {
+        recognition.stop();
+        animationOutline[0].style.animationIterationCount = '0';
+        console.log('Запись завершена');
+    }, 6000);
+};
 
 microphoneIcon.onclick = function () {
     if (!speaking) {
@@ -545,20 +572,15 @@ generateSessionHash(sessionId)
     });
 
 
-console.log(dictionary);
 let audio = null;
 
 recognition.onresult = function (event) {
     const last = event.results.length - 1;
-    console.log(event.results[last][0].transcript);
     let original_text = event.results[last][0].transcript;
-    console.log(generateSessionId());
     document.getElementById("caption").innerHTML = original_text;
     let text = removeStopwords(original_text.toLowerCase());
-    console.log(substituteWords(text, dictionary));
     let audio_answer_id = get_answer(text);
     if (audio_answer_id === undefined) audio_answer_id = get_answer(substituteWords(text, dictionary));
-    console.log(audio_answer_id);
     if (audio_answer_id !== undefined) {
         set(ref(database, 'feedback/' + generateSessionId() ), {
             text: original_text,
@@ -616,3 +638,48 @@ recognition.onend = () => {
     recognition.stop();
     animationOutline[0].style.animationIterationCount = '0';
 };
+
+const resizeObserver = new ResizeObserver(handleResize);
+
+let captionHtml = document.getElementById('caption');
+// Добавляем обработчик события на изменение размера окна
+resizeObserver.observe(captionHtml);
+
+function handleResize() {
+    const textContent = captionHtml.textContent;
+    if (textContent.length < 18) {
+        captionHtml.style.fontSize = '1.5em';
+        captionHtml.style.padding = '6px';
+    } else if (textContent.length < 36) {
+        captionHtml.style.fontSize = '1.1em'
+        captionHtml.style.padding = '9px';
+    } else {
+        captionHtml.style.fontSize = '0.8em';
+        captionHtml.style.padding = '12px';
+    }
+}
+
+window.animationPressMe = function(userFunction) {
+    if (!isModal) {
+        pressMe = true;
+        actions["Greeting"].setEffectiveWeight(0);
+        prepareCrossFade(actions["Idle"], actions["Press me anim"]);
+
+        return setTimeout(() => {
+            actions["Greeting"].setEffectiveWeight(0);
+            prepareCrossFade(actions["Press me anim"], actions["Idle"]);
+            pressMe = false;
+            if (typeof userFunction === 'function') {
+                userFunction(); // Вызываем приходящую функцию, если она была передана
+            }
+        }, 8000);
+    }
+}
+
+window.showModal = function () {
+    isModal = true;
+}
+
+window.hideModal = function () {
+    isModal = false;
+}
