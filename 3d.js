@@ -343,14 +343,15 @@ loader.load('./public/model_.glb', function (gltf) {
     // actions["Speaking"].setEffectiveWeight(1);
     // prepareCrossFade(actions["Greeting"], actions["Speaking"]);
     setTimeout(() => {
-        window.animationPressMe(() => {
+        //window.animationPressMe(() => {
             prepareCrossFade(actions["Idle"], actions["Greeting"])
             greetingHiva= true;
             setTimeout(() => {
                 greetingHiva = false;
                 prepareCrossFade(actions["Greeting"], actions["Idle"]);
+                setTimeout(window.animationDance, 4000);
             }, 4000);
-        })
+        //})
     }, 1000)
     setTimeout(() => {
 
@@ -380,7 +381,7 @@ loader.load('./public/model_.glb', function (gltf) {
     });
 
     model.position.set(0, -2.5, 0);
-    model.scale.set(4.9, 4.9, 4.9);
+    model.scale.set(4.5, 4.5, 4.5);
     model.rotation.set(0.2, 0, 0);
     scene.add(model);
 }, undefined, function (error) {
@@ -513,12 +514,12 @@ recognition.maxAlternatives = 1;
 recognition.onstart = () => {
     console.log('Запись началась');
 
-    // Ждем 5 секунд, затем автоматически останавливаем запись
+    // Ждем 9 секунд, затем автоматически останавливаем запись
     setTimeout(() => {
         recognition.stop();
         animationOutline[0].style.animationIterationCount = '0';
         console.log('Запись завершена');
-    }, 6000);
+    }, 9000);
 };
 
 microphoneIcon.onclick = function () {
@@ -663,6 +664,7 @@ window.animationPressMe = function(userFunction) {
     if (!isModal) {
         pressMe = true;
         actions["Greeting"].setEffectiveWeight(0);
+        actions["Dance"].setEffectiveWeight(0);
         prepareCrossFade(actions["Idle"], actions["Press me anim"]);
 
         return setTimeout(() => {
@@ -673,6 +675,17 @@ window.animationPressMe = function(userFunction) {
                 userFunction(); // Вызываем приходящую функцию, если она была передана
             }
         }, 8000);
+    }
+}
+
+window.animationDance = function(userFunction) {
+    isModal = false;
+    // actions["Greeting"].setEffectiveWeight(0);
+    if (!isModal) {
+        actions["Dance"].setEffectiveWeight(1);
+        setTimeout(() => {
+            actions["Dance"].setEffectiveWeight(0);
+        }, 10000);
     }
 }
 
