@@ -381,7 +381,7 @@ loader.load('./public/model_.glb', function (gltf) {
     });
 
     model.position.set(0, -2.5, 0);
-    model.scale.set(4.5, 4.5, 4.5);
+    model.scale.set(4.4, 4.4, 4.4);
     model.rotation.set(0.2, 0, 0);
     scene.add(model);
 }, undefined, function (error) {
@@ -510,9 +510,34 @@ recognition.lang = 'ru-RU';
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
+let isMicrophoneAllowed = false; // Переменная для отслеживания разрешения на микрофон
+
+// Функция для запроса разрешения на микрофон
+function requestMicrophonePermission() {
+    return navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function(stream) {
+        isMicrophoneAllowed = true;
+        return stream;
+    })
+    .catch(function(error) {
+        console.error('Ошибка при запросе разрешения на микрофон:', error);
+        isMicrophoneAllowed = false;
+    });
+}
+
 // Устанавливаем обработчик события "start"
 recognition.onstart = () => {
     console.log('Запись началась');
+
+    if (!isMicrophoneAllowed) {
+        requestMicrophonePermission().then(() => {
+            if (isMicrophoneAllowed) {
+                recognition.start();
+            }
+        });
+    } else {
+        recognition.start();
+    }
 
     // Ждем 9 секунд, затем автоматически останавливаем запись
     setTimeout(() => {
@@ -631,8 +656,6 @@ recognition.onspeechend = function () {
     recognition.stop();
     console.log('stop')
     animationOutline[0].style.animationIterationCount = '0';
-    // microphoneWrapper.style.visibility = 'visible';
-    // audioRecordAnimation.style.visibility = 'hidden';
 };
 
 recognition.onend = () => {
@@ -678,9 +701,7 @@ window.animationPressMe = function(userFunction) {
     }
 }
 
-window.animationDance = function(userFunction) {
-    isModal = false;
-    // actions["Greeting"].setEffectiveWeight(0);
+window.animationDance = function() {
     if (!isModal) {
         actions["Dance"].setEffectiveWeight(1);
         setTimeout(() => {
