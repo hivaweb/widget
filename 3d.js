@@ -510,34 +510,9 @@ recognition.lang = 'ru-RU';
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
-let isMicrophoneAllowed = false; // Переменная для отслеживания разрешения на микрофон
-
-// Функция для запроса разрешения на микрофон
-function requestMicrophonePermission() {
-    return navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(function(stream) {
-        isMicrophoneAllowed = true;
-        return stream;
-    })
-    .catch(function(error) {
-        console.error('Ошибка при запросе разрешения на микрофон:', error);
-        isMicrophoneAllowed = false;
-    });
-}
-
 // Устанавливаем обработчик события "start"
 recognition.onstart = () => {
     console.log('Запись началась');
-
-    if (!isMicrophoneAllowed) {
-        requestMicrophonePermission().then(() => {
-            if (isMicrophoneAllowed) {
-                recognition.start();
-            }
-        });
-    } else {
-        recognition.start();
-    }
 
     // Ждем 9 секунд, затем автоматически останавливаем запись
     setTimeout(() => {
