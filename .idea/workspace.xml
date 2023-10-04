@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1ac7f86b-7e18-43d5-ad3d-406ab704c364" name="Changes" comment="firebase fix 3">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a621ef23-df4f-4447-b0e3-b28409b9c0bb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/3d.js" beforeDir="false" afterPath="$PROJECT_DIR$/3d.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
