@@ -341,7 +341,7 @@ loader.load('./public/model_.glb', function (gltf) {
     console.log(actions);
 
     // actions["Speaking"].setEffectiveWeight(1);
-    // prepareCrossFade(actions["Greeting"], actions["Speaking"]);
+    prepareCrossFade(actions["Greeting"], actions["Speaking"]);
     setTimeout(() => {
         //window.animationPressMe(() => {
             prepareCrossFade(actions["Idle"], actions["Greeting"])
@@ -656,7 +656,7 @@ function handleResize() {
 }
 
 window.animationPressMe = function(userFunction) {
-    if (!isModal) {
+    /*if (!isModal) {
         pressMe = true;
         actions["Greeting"].setEffectiveWeight(0);
         actions["Dance"].setEffectiveWeight(0);
@@ -670,7 +670,7 @@ window.animationPressMe = function(userFunction) {
                 userFunction(); // Вызываем приходящую функцию, если она была передана
             }
         }, 8000);
-    }
+    }*/
 }
 
 window.animationDance = function() {
