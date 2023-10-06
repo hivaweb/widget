@@ -353,9 +353,6 @@ loader.load('./public/model_.glb', function (gltf) {
             }, 4000);
         //})
     }, 1000)
-    setTimeout(() => {
-
-    }, 5000)
 
     // setInterval(() => {
     //     actions["Blinking"].weight = 1;
@@ -478,7 +475,7 @@ window.sayHello = function() {
     startAudio = new Audio("./public/voice/hello_" + r + ".wav");
     startAudio.play().then();
     speaking = true;
-    actions["Press me anim"].setEffectiveWeight(0);
+    // actions["Press me anim"].setEffectiveWeight(0);
     actions["Mouth"].setEffectiveWeight(1);
     startAudio.onended = function () {
         actions["Mouth"].setEffectiveWeight(0);
