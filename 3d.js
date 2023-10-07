@@ -125,7 +125,7 @@ function get_answer(request) {
         }
     }
     else {
-        return "repeat"
+        return "repeat_" + recognition.lang.split("-")[0];
     }
 }
 
@@ -506,6 +506,7 @@ recognition.grammars = speechRecognitionList;
 recognition.lang = 'ru-RU';
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
+console.log(recognition.lang.split("-")[0]);
 
 // Устанавливаем обработчик события "start"
 recognition.onstart = () => {
