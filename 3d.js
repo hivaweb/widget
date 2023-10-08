@@ -472,6 +472,7 @@ let startAudio = null;
 window.sayHello = function() {
     let r = Math.round(Math.random());
     if (recognition.lang == "ru-RU") { r = 0}
+    if (recognition.lang == "en-EN") { r = 1}
     startAudio = new Audio("./public/voice/hello_" + r + ".wav");
     startAudio.play().then();
     speaking = true;
