@@ -476,9 +476,9 @@ window.sayHello = function() {
     startAudio.play().then();
     speaking = true;
     // actions["Press me anim"].setEffectiveWeight(0);
-    // actions["Mouth"].setEffectiveWeight(1);
+    actions["Mouth"].setEffectiveWeight(1);
     startAudio.onended = function () {
-        // actions["Mouth"].setEffectiveWeight(0);
+        actions["Mouth"].setEffectiveWeight(0);
         speaking = false;
         recognition.start();
     };
