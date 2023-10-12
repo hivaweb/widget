@@ -48,7 +48,7 @@
       <workItem from="1695121208769" duration="2633000" />
       <workItem from="1695959583304" duration="2835000" />
       <workItem from="1696326011617" duration="5203000" />
-      <workItem from="1697076891396" duration="5305000" />
+      <workItem from="1697076891396" duration="6074000" />
     </task>
     <task id="LOCAL-00001" summary="firebase fix">
       <created>1694927838022</created>
@@ -94,16 +94,5 @@
     <MESSAGE value="firebase fix" />
     <MESSAGE value="firebase fix 3" />
     <option name="LAST_COMMIT_MESSAGE" value="firebase fix 3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/3d.js</url>
-          <line>6</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
