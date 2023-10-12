@@ -9,6 +9,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebas
 import { getFirestore, collection } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
+
+
 const firebaseConfig = {
 apiKey: "AIzaSyBtpi-RetdHZN1Zec9N40Hs4LxWuUnZ0hs",
 authDomain: "hivaweb-4624b.firebaseapp.com",
